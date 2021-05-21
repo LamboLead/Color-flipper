@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Color flipper</title>
+</head>
+<body>
+    <nav>
+        <span>Color Flipper</span>
+        <div>
+            <input type="radio" id="normal_radio" name="color_type" checked>
+            <label for="normal_radio" id="normal_button" value="0">Normal</label>
+
+            <input type="radio" id="rgb_radio" name="color_type">
+            <label for="rgb_radio" id="rgb_button" value="1">RGB</label>
+
+            <input type="radio" id="hex_radio" name="color_type">
+            <label for="hex_radio" id="hex_button" value="2">Hex</label>
+        </div>
+    </nav>
+    <main>
+        <h2>Background color: </h2>
+        <button type="button" id="click_button">CLICK ME!</button>
+    </main>
+    <script src="main.js"></script>
+</body>
+</html>
