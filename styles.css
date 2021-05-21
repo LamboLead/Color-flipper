@@ -1,10 +1,11 @@
 :root {
-    --main-color: white;
-    --secondary-color: white;
-    --tertiary-color: rgba(50, 50, 50, 1);
+    --main-color: white; /*Random color*/
 
-    --main-font: 'Source Code Pro', monospace;
-    --secondary-font: 'Lato', sans-serif;
+    --secondary-color: rgb(255, 255, 255); /*Navbar color*/
+    --tertiary-color: rgb(50, 50, 50); /*Labeling color*/
+
+    --main-font: 'Source Code Pro', monospace; /*Body font*/
+    --secondary-font: 'Lato', sans-serif; /*Navbar font*/
 }
 
 body {
@@ -21,11 +22,12 @@ nav {
     width: 100vw;
     height: 50px;
 
-    background-color: white;
+    background-color: var(--secondary-color);
     box-shadow: 10px 0px 10px 10px rgba(0, 0, 0, 0.4);
 
     font-family: var(--secondary-font);
     font-size: 20px;
+    color: var(--tertiary-color);
 
     display: flex;
     flex-direction: row;
@@ -50,7 +52,7 @@ nav > div > label {
     width: 80px;
     padding: 3px;
 
-    border: 1px solid black;
+    border: 1px solid var(--tertiary-color);
     border-radius: 3px;
     cursor: pointer;
 
@@ -58,7 +60,11 @@ nav > div > label {
     font-size: 17px;
     text-align: center;
     text-decoration: none;
-    color: var(--tertiary-color);
+    /* color: var(--tertiary-color); */
+}
+
+.selected-label {
+    background-color: var(--main-color);
 }
 
 nav > div > label:hover {
@@ -89,7 +95,11 @@ main > h2 {
     text-align: center;
     font-family: var(--main-font);
     font-size: 40px;
-    color: white;
+    color: var(--secondary-color);
+}
+
+main > h2 > span {
+    color: var(--main-color);
 }
 
 main > button {
@@ -112,7 +122,7 @@ main > button:hover {
     width: 220px;
     height: 70px;
 
-    background-color: white;
+    background-color: var(--secondary-color);
     box-shadow: 10px 5px 10px 5px rgba(0, 0, 0, 0.4);
 
     font-size: 25px;

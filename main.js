@@ -165,21 +165,27 @@ const controlColor = {
         radio: document.getElementById("hex_radio")
     }
 }
+const backColors = ["255, 255, 255", "50, 50, 50"];
 
 const spanColor = document.createElement("span");
 var checked = controlColor["normalColor"]["button"];
-var randomColor = 143;
-var checkedIndex = 0;
-var color = colorArr[randomColor][checkedIndex];
+var randomColor = 143; // Represents the 'white' color
+var checkedIndex = 0; // Represents the first index of each color array (plain word)
+var color = colorArr[randomColor][checkedIndex]; // Represents the plain word 'white'
 spanColor.innerText = color;
-spanColor.style.color = color;
 titleColor.appendChild(spanColor);
-checked.style.backgroundColor = color;
+checked.classList.add("selected-label");
+root.style.setProperty("--main-color", color);
 
-const controlKeys = Object.keys(controlColor);
+/* ADD HERE THE SECONDARY AND TERTIARY COLOR CHANGING DEPENDING ON CONTRAST */
+
+const controlKeys = Object.keys(controlColor); // Represent each button in the navbar
 controlKeys.forEach(colorType => controlColor[colorType]["button"].addEventListener("click", selectType));
 
 colorButton.addEventListener("click", changeColor);
+colorButton.addEventListener("click", function() {
+    findContrastRatio(randomColor);
+})
 
 // Select the syntax type for the color
 function selectType(event) {
@@ -188,7 +194,7 @@ function selectType(event) {
     checkedIndex = checked.getAttribute("value");
     color = colorArr[randomColor][checkedIndex];
     spanColor.innerText = color;
-    checked.style.backgroundColor = color;
+    checked.style.backgroundColor = "var(--main-color)";
 }
 
 // Change the main color of the page.
@@ -196,7 +202,48 @@ function changeColor() {
     randomColor = Math.floor(Math.random() * colorArr.length);
     color = colorArr[randomColor][checkedIndex];
     spanColor.innerText = color;
-    spanColor.style.color = color;
     root.style.setProperty("--main-color", color);
-    checked.style.backgroundColor = color;
+}
+
+function findContrastRatio(random) {
+    let rgbColor = colorArr[random][1]
+        .match(/\d+/g)
+        .map(value => realColor(parseInt(value) / 255)); // Array containing the relative [red, green, blue] values of the random color
+
+    let tertiaryColor = getComputedStyle(root).getPropertyValue("--tertiary-color").match(/\d+/g);
+    let decimalTertiaryColor = tertiaryColor
+        .map(value => realColor(parseInt(value) / 255)); // Array containing the relative [red, green, blue] values of the CSS --tertiary-color variable
+
+    let luminanceMain = 0.2126 * rgbColor[0] + 0.7152 * rgbColor[1] + 0.0722 * rgbColor[2];
+    let luminanceTertiary = 0.2126 * decimalTertiaryColor[0] + 0.7152 * decimalTertiaryColor[1] + 0.0722 * decimalTertiaryColor[2];
+    let contrastRatio;
+    if (luminanceMain > luminanceTertiary) {
+        contrastRatio = ((luminanceMain + 0.05)/(luminanceTertiary + 0.05)).toFixed(2);
+    } else {
+        contrastRatio = ((luminanceTertiary + 0.05)/(luminanceMain + 0.05)).toFixed(2);
+    }
+    changeBackgroundColors(contrastRatio, tertiaryColor);
+}
+
+function realColor(colorSub) {
+    if (colorSub <= 0.03928) {
+        return colorSub / 12.92;
+    } else {
+        return ((colorSub + 0.055)/1.055) ** 2.4;
+    }
+}
+
+function changeBackgroundColors(contrast, tertiary) {
+    if (contrast < 5) {
+        switch (tertiary[0]) {
+            case "50":
+                root.style.setProperty("--tertiary-color", `rgb(${backColors[0]})`);
+                root.style.setProperty("--secondary-color", `rgb(${backColors[1]})`);
+                break;
+            case "255":
+                root.style.setProperty("--tertiary-color", `rgb(${backColors[1]})`);
+                root.style.setProperty("--secondary-color", `rgb(${backColors[0]})`);
+                break;
+        }
+    }
 }
